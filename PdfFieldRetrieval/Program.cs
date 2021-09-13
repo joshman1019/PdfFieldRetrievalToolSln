@@ -1,7 +1,6 @@
-﻿using System;
-using iText.Forms;
-using iText.Forms.Fields;
+﻿using iText.Forms;
 using iText.Kernel.Pdf;
+using System;
 
 namespace PdfFieldRetrieval
 {
