@@ -3,11 +3,16 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyVersion>1.0.0.2</AssemblyVersion>
+    <AssemblyVersion>1.0.0.15</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="itext7" Version="7.1.16" />
+    <PackageReference Include="itext7" Version="7.2.0" />
+    <PackageReference Include="Realm" Version="10.7.1" />
+    <PackageReference Include="Realm.Fody" Version="10.7.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
