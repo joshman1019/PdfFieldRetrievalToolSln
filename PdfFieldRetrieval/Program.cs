@@ -1,7 +1,6 @@
 ﻿using iText.Forms;
 using iText.Kernel.Pdf;
 using System;
-using Realms;
 using MongoDB.Bson; // MUST REMAIN HERE
 using System.Collections.Generic;
 
@@ -20,6 +19,7 @@ namespace PdfFieldRetrieval
                 Console.WriteLine("2) Enter new form");
                 Console.WriteLine("3) Exit System");
                 var result = Console.ReadKey().Key;
+                Console.WriteLine(); 
                 switch (result)
                 {
                     case ConsoleKey.D1:
@@ -72,6 +72,16 @@ namespace PdfFieldRetrieval
             {
                 if(result <= finalizedResults.Count - 1)
                 {
+                    Console.WriteLine("Would you like to place the field result within a preformatted line?");
+                    Console.WriteLine("Please press Y or N"); 
+                    var formLineResult = Console.ReadKey().Key;
+                    string preformattedLine = string.Empty; 
+                    if(formLineResult == ConsoleKey.Y)
+                    {
+                        Console.WriteLine("Enter your preformatted line. Field names should be represented by ^ and field values should be represented by !");
+                        preformattedLine = Console.ReadLine(); 
+                    }
+                    Console.WriteLine(); 
                     var selectedForm = finalizedResults[result];
                     Console.WriteLine();
                     Console.WriteLine($"The selected form was at index {result}");
@@ -80,7 +90,14 @@ namespace PdfFieldRetrieval
                     Console.WriteLine();
                     foreach (PDFField fieldName in selectedForm.FieldNames)
                     {
-                        Console.WriteLine(fieldName.FieldValue); 
+                        if(formLineResult == ConsoleKey.Y)
+                        {
+                            Console.WriteLine(preformattedLine.Replace("^", "\"" + fieldName.FieldValue + "\"").Replace("!", "\"\""));
+                        }
+                        else
+                        {
+                            Console.WriteLine(fieldName.FieldValue); 
+                        }
                     }
                     Console.WriteLine();
                     Console.WriteLine("***END*** - Press enter to continue"); 
@@ -104,11 +121,13 @@ namespace PdfFieldRetrieval
                 Console.WriteLine("Please enter Y or N");
 
                 var result = Console.ReadKey().Key;
+                Console.WriteLine(); 
                 while (result != ConsoleKey.Y && result != ConsoleKey.N)
                 {
                     Console.WriteLine("Sorry, that was an invalid selection. Please indicate whether or not you would like to save this form for retrieval later");
                     Console.WriteLine("Please enter Y or N");
-                    result = Console.ReadKey().Key; 
+                    result = Console.ReadKey().Key;
+                    Console.WriteLine(); 
                 }
 
                 PdfDocument document = new PdfDocument(new PdfReader(path)); 
@@ -120,6 +139,7 @@ namespace PdfFieldRetrieval
                 {
                     Console.WriteLine("Please enter the name of the form for storage");
                     newForm.FormName = Console.ReadLine();
+                    Console.WriteLine(); 
                 }
                 foreach (string formField in fields.Keys)
                 {
