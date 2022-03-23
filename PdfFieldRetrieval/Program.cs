@@ -68,21 +68,30 @@ namespace PdfFieldRetrieval
                 Console.WriteLine($"{index} - {enumerator.Current.FormName}"); 
                 index++;
             }
-            Console.WriteLine();
-            Console.WriteLine("Please enter the line number to delete or -1 to cancel");
-            var entry = Convert.ToInt32(Console.ReadLine()); 
-            if(entry == -1)
+            try
             {
-                Console.WriteLine("CANCEL");
-                return; 
-            }
-            if(entry >= 0 && entry <= index)
-            {
-                realm.Write(() =>
+                Console.WriteLine();
+                Console.WriteLine("Please enter the line number to delete or -1 to cancel");
+                var entry = Convert.ToInt32(Console.ReadLine()); 
+                if(entry == -1)
                 {
-                    realm.Remove(forms[entry]);
-                    Console.WriteLine("Entry Removed");
-                }); 
+                    Console.WriteLine("CANCEL");
+                    return; 
+                }
+                if(entry >= 0 && entry <= index)
+                {
+                    realm.Write(() =>
+                    {
+                        realm.Remove(forms[entry]);
+                        Console.WriteLine("Entry Removed");
+                    }); 
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine();
+                Console.WriteLine();
             }
         }
 
