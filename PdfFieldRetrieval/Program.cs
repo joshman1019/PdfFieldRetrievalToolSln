@@ -70,9 +70,14 @@ namespace PdfFieldRetrieval
             }
             try
             {
+                Console.WriteLine($"{index} - CANCEL DELETE");
                 Console.WriteLine();
-                Console.WriteLine($"Please enter the line number to delete or {index} to cancel");
+                Console.WriteLine("Please make a selection to delete/cancel"); 
                 var entry = Convert.ToInt32(Console.ReadLine()); 
+                if(entry > index || entry < 0)
+                {
+                    Console.WriteLine("INVALID SELECTION - RETURNING TO MAIN MENU"); 
+                }
                 if(entry == index)
                 {
                     Console.WriteLine("CANCEL");
