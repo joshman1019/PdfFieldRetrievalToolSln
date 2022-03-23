@@ -17,7 +17,8 @@ namespace PdfFieldRetrieval
                 Console.WriteLine("Please make a selection");
                 Console.WriteLine("1) View indexed forms");
                 Console.WriteLine("2) Enter new form");
-                Console.WriteLine("3) Exit System");
+                Console.WriteLine("3) Delete Forms"); 
+                Console.WriteLine("ESC) Exit System");
                 var result = Console.ReadKey().Key;
                 Console.WriteLine(); 
                 switch (result)
@@ -37,12 +38,51 @@ namespace PdfFieldRetrieval
                     case ConsoleKey.D3:
                     case ConsoleKey.NumPad3:
                         {
+                            DeleteForms(); 
+                            break; 
+                        }
+                    case ConsoleKey.Escape:
+                        {
                             m_MenuBreak = 1; 
                             break; 
                         }
                     default:
                         break;
                 }
+            }
+        }
+
+        static void DeleteForms()
+        {
+            Console.WriteLine();
+            Console.WriteLine("DELETE MENU");
+            Console.WriteLine(); 
+            List<PDFForm> forms;
+            // Retrieve forms
+            var realm = MongoFactory.GetApplicationDBRealm();
+            forms = new List<PDFForm>(realm.All<PDFForm>());
+            var enumerator = forms.GetEnumerator();
+            int index = 0; 
+            while (enumerator.MoveNext())
+            {
+                Console.WriteLine($"{index} - {enumerator.Current.FormName}"); 
+                index++;
+            }
+            Console.WriteLine();
+            Console.WriteLine("Please enter the line number to delete or -1 to cancel");
+            var entry = Convert.ToInt32(Console.ReadLine()); 
+            if(entry == -1)
+            {
+                Console.WriteLine("CANCEL");
+                return; 
+            }
+            if(entry >= 0 && entry <= index)
+            {
+                realm.Write(() =>
+                {
+                    realm.Remove(forms[entry]);
+                    Console.WriteLine("Entry Removed");
+                }); 
             }
         }
 
